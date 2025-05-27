@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="text/javascript">
+        function wyswietlLiczby(...argumenty) {
+            console.log(argumenty)
+        }
+        function sumator(...argumenty) {
+            console.log("Suma liczb: ", argumenty, " wynosi ", argumenty.reduce((acc, curr) => {
+                return [+acc + +curr.czas];
+            }, 0))
+        }
+        sumator(4, 6, 7, 9, 0, 2) // [4, 6, 7, 9, 0, 2
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

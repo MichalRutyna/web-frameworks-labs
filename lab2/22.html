@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="text/javascript">
+        const listaZadan = [
+            {
+                id: 1,
+                tekst: "Zrobienie zakupów",
+                zrealizowano: true
+            },
+            {
+                id: 2,
+                tekst: "Przegląd techniczny samochodu",
+                zrealizowano: false
+            },
+            {
+                id: 3,
+                tekst: "Wizyta u dentysty",
+                zrealizowano: false
+            },
+        ]
+        listaZadan.forEach(element => {
+            console.log(element["tekst"])
+        });
+
+        let nowa = []
+        listaZadan.map(element => {
+            nowa.push(element["tekst"])
+        })
+        console.log(nowa)
+
+        let zrealizowane = []
+        let zr = listaZadan.filter(element => {
+            return element.zrealizowano
+        }).map(element => {
+            zrealizowane.push(element["tekst"])
+        })
+        console.log(zrealizowane)
+
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

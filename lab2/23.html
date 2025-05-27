@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="text/javascript">
+        const poniedzialek = [
+            {
+                'nazwa': 'Przygotowania do zajęć z AI',
+                'czas': 180
+            },
+            {
+                'nazwa': 'Realizacja projektu z AI',
+                'czas': 120
+            }
+        ]
+        const wtorek = [
+            {
+                'nazwa': 'Rozbudowa swojego bloga',
+                'czas': 240
+            },
+            {
+                'nazwa': 'Administrowanie serwisem szkoly',
+                'czas': 180
+            },
+            {
+                'nazwa': 'Sluchanie koncertu online',
+                'czas': 120
+            }]
+
+        //let wynik = poniedzialek.reduce((acc, curr) => wtorek.push(curr), [])
+        let wynik = poniedzialek.concat(wtorek)
+            .map(elem => {
+                elem.czas /= 60
+                return elem
+            })
+            .filter(elem => {
+                return elem.czas <= 2
+            })
+            .map(elem => {
+                elem.czas *= 35
+                return elem
+            })
+            .reduce((acc, curr) => {
+                return [+acc + +curr.czas];
+            }, 0)
+            .map(elem => {
+                return elem + ".00 PLN"
+            })
+            .reduce(elem => {
+                return elem
+            })
+        console.log(wynik)
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>
