@@ -66,10 +66,6 @@ router.post('/contact', upload.single('photo'), csrfProtection, [
     const data = matchedData(req)
     console.log('Sanitized: ', data)
 
-    if (req.file) {
-        console.log('Uploaded: ', req.file)
-    }
-
     // Save to MongoDB
     try {
         const contact = new Contact(data);

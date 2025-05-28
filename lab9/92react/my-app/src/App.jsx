@@ -2,26 +2,17 @@ import { useState } from 'react'
 import { Route, Routes, Navigate } from "react-router-dom"
 
 import './App.css'
-import FlashSuccess from './components/FlashSuccess'
+import Home from './components/Home'
 import Contact from './components/Contact'
 
 
 function App() {
-  const [count, setCount] = useState(0)
-  const [errors, setErrors] = useState(
-    {
-    "message": "ddd",
-    "email": "ccc"
-    }
-  )
+  const [status, setStatus] = useState(0)
 
   return (
     <Routes>
-      <Route path="/" exact element={<FlashSuccess />} />
-      <Route path="/contact" exact element={<Contact />} />
-      {/*
-      {messages.success ? <FlashSuccess /> : ''}
-      <h1>Working With Forms in Node.js</h1> */}
+      <Route path="/" exact element={<Home status={status} />} />
+      <Route path="/contact" exact element={<Contact setStatus={setStatus} />} />
     </Routes>
   )
 }

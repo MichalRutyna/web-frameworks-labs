@@ -1,7 +1,10 @@
 import { useEffect, useState, useRef } from "react";
-import Errors from "./Errors"
+import { useNavigate } from "react-router-dom"
+
 import "./Contact.css"
-const Contact = ({ }) => {
+import Errors from "./Errors"
+
+const Contact = ({ setStatus }) => {
     const [csrfToken, setCsrfToken] = useState("");
     const [data, setData] = useState({
         "email": "",
@@ -11,6 +14,8 @@ const Contact = ({ }) => {
         "email": "",
         "message": ""
     })
+
+    const navigate = useNavigate();
 
     const formRef = useRef();
 
@@ -37,8 +42,11 @@ const Contact = ({ }) => {
             });
             const result = await response.json();
             if (result.success) {
+                setStatus(1)
+                navigate('/')
                 alert(result.success);
                 formRef.current.reset();
+                
             } else {
                 console.error("Form submission error:", result);
                 setErrors({});
@@ -63,13 +71,13 @@ const Contact = ({ }) => {
                 <div className={"form-field " + (errors.message ? "form-field-invalid" : "")}>
                     <label htmlFor="message">Message</label>
                     <textarea className="input" id="message" name="message" rows="4" defaultValue={data.message} autoFocus />
-                    <p className="error-message">{errors.message ? <Errors message={errors.message} /> : ''}</p>
+                    <div className="error-message">{errors.message ? <Errors message={errors.message} /> : ''}</div>
                 </div>
 
                 <div className={"form-field " + (errors.email ? "form-field-invalid" : "")}>
                     <label htmlFor="email">Email</label>
                     <input className="input" id="email" name="email" type="email" defaultValue={data.email} />
-                    <p className="error-message">{errors.email ? <Errors message={errors.email} /> : ''}</p>
+                    <div className="error-message">{errors.email ? <Errors message={errors.email} /> : ''}</div>
                 </div>
 
                 <div className="form-field">
