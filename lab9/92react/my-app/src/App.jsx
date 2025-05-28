@@ -8,12 +8,6 @@ import Contact from './components/Contact'
 
 function App() {
   const [count, setCount] = useState(0)
-  const [data, setData] = useState(
-      {
-      "email": "aaa@",
-      "message": "bbb"
-      }
-  )
   const [errors, setErrors] = useState(
     {
     "message": "ddd",
@@ -24,7 +18,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" exact element={<FlashSuccess />} />
-      <Route path="/contact" exact element={<Contact data={data} errors={errors}/>} />
+      <Route path="/contact" exact element={<Contact />} />
       {/*
       {messages.success ? <FlashSuccess /> : ''}
       <h1>Working With Forms in Node.js</h1> */}

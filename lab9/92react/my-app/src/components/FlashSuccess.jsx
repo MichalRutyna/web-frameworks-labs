@@ -1,6 +1,6 @@
 function FlashSuccess() {
     return (
-        <div class="flash flash-success">
+        <div className="flash flash-success">
             Sukces!
         </div>
     )

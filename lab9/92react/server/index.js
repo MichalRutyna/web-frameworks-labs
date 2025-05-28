@@ -3,8 +3,6 @@ const express = require('express')
 
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
-const flash = require('express-flash')
-
 const helmet = require("helmet")
 
 const cors = require('cors')
@@ -30,7 +28,6 @@ const middlewares = [
         saveUninitialized: false,
         cookie: { maxAge: 60000 }
     }),
-    flash(),
     express.json(),
     helmet(),
 ];

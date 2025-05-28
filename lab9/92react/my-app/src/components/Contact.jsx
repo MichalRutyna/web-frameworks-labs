@@ -1,8 +1,17 @@
 import { useEffect, useState, useRef } from "react";
 import Errors from "./Errors"
-
-const Contact = ({ data, errors }) => {
+import "./Contact.css"
+const Contact = ({ }) => {
     const [csrfToken, setCsrfToken] = useState("");
+    const [data, setData] = useState({
+        "email": "",
+        "message": ""
+    })
+    const [errors, setErrors] = useState({
+        "email": "",
+        "message": ""
+    })
+
     const formRef = useRef();
 
     useEffect(() => {
@@ -30,11 +39,15 @@ const Contact = ({ data, errors }) => {
             if (result.success) {
                 alert(result.success);
                 formRef.current.reset();
-            } else if (result.errors) {
-                console.log("Validation errors:", result.errors);
-            }
-            if (!response.ok) {
+            } else {
                 console.error("Form submission error:", result);
+                setErrors({});
+                for (const error of result.errors) {
+                    setErrors((prevErrors) => ({
+                        ...prevErrors,
+                        [error.path]: error.msg
+                    }));
+                }
             }
         } catch (error) {
             console.error("Error submitting form:", error);
@@ -50,13 +63,13 @@ const Contact = ({ data, errors }) => {
                 <div className={"form-field " + (errors.message ? "form-field-invalid" : "")}>
                     <label htmlFor="message">Message</label>
                     <textarea className="input" id="message" name="message" rows="4" defaultValue={data.message} autoFocus />
-                    {errors.message ? <Errors message={errors.message} /> : ''}
+                    <p className="error-message">{errors.message ? <Errors message={errors.message} /> : ''}</p>
                 </div>
 
                 <div className={"form-field " + (errors.email ? "form-field-invalid" : "")}>
                     <label htmlFor="email">Email</label>
                     <input className="input" id="email" name="email" type="email" defaultValue={data.email} />
-                    {errors.email ? <Errors message={errors.email} /> : ''}
+                    <p className="error-message">{errors.email ? <Errors message={errors.email} /> : ''}</p>
                 </div>
 
                 <div className="form-field">

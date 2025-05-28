@@ -7,6 +7,29 @@ const csrfProtection = csrf({
 
 const router = express.Router()
 
+const nodemailer = require('nodemailer')
+var transporter = nodemailer.createTransport({
+    host: "sandbox.smtp.mailtrap.io",
+    port: 2525,
+    auth: {
+      user: "592c6dc9323031",
+      pass: "532fe18245305e"
+    }
+  });
+
+// MongoDB setup
+const mongoose = require('mongoose');
+const Contact = mongoose.model('Contact', new mongoose.Schema({
+    email: String,
+    message: String,
+    createdAt: { type: Date, default: Date.now }
+}));
+
+mongoose.connect('mongodb://localhost:27017/contactDB', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}).then(() => console.log('Connected to MongoDB')).catch(err => console.error('MongoDB connection error:', err));
+
 router.get('/contact', csrfProtection, (req, res) => {
     res.cookie('XSRF-TOKEN', req.csrfToken(), { 
         httpOnly: false,
@@ -32,7 +55,7 @@ router.post('/contact', upload.single('photo'), csrfProtection, [
         .bail()
         .trim()
         .normalizeEmail()
-], (req, res) => {
+], async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ 
@@ -47,9 +70,33 @@ router.post('/contact', upload.single('photo'), csrfProtection, [
         console.log('Uploaded: ', req.file)
     }
 
-    res.json({ 
-        success: 'Thanks for the message! I\'ll be in touch :)'
-    });
+    // Save to MongoDB
+    try {
+        const contact = new Contact(data);
+        await contact.save();
+        console.log('Saved to MongoDB:', contact);
+    } catch (err) {
+        console.error('Error saving to MongoDB:', err);
+        return res.status(500).json({ error: 'Failed to save data' });
+    }
+
+    const mailOptions = {
+        from: 'test@test.com', // Replace with your email
+        to: 'test@test.com', // Replace with the static email address
+        subject: 'New Contact Form Submission',
+        text: `New message from ${data.email}: ${data.message}`
+    }
+
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.error('Error sending email: ', error)
+            return res.status(500).json({ error: 'Failed to send email' })
+        }
+        console.log('Email sent: ', info.response)
+        res.json({ 
+            success: 'Thanks for the message! I\'ll be in touch :)'
+        });
+    })
 })
 
 module.exports = router
