@@ -49,6 +49,8 @@ router.post('/contact', upload.single('photo'), csrfProtection, [
         console.log('Uploaded: ', req.file)
     }
 
+    
+
     req.flash('success', 'Thanks for the message! I‘ll be in touch :)')
     res.redirect('/')
 })

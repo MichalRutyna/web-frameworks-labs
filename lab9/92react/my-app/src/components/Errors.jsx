@@ -1,7 +1,7 @@
-function Errors(message) {
+function Errors({message}) {
     return (
         <div className="error">
-            <h5>{""+message}</h5>
+            <h5>{message}</h5>
         </div>
     )
 }

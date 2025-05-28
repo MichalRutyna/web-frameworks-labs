@@ -1,18 +1,19 @@
 const express = require('express')
+
 const csrf = require('csurf')
-const csrfProtection = csrf({ cookie: true })
+const csrfProtection = csrf({ 
+    cookie: true
+})
 
 const router = express.Router()
-router.get('/', (req, res) => {
-    res.render('layout')
-});
 
 router.get('/contact', csrfProtection, (req, res) => {
-    res.render('contact', {
-        data: {},
-        errors: {},
+    res.cookie('XSRF-TOKEN', req.csrfToken(), { 
+        httpOnly: false,
+    });
+    res.json({ 
         csrfToken: req.csrfToken()
-    })
+    });
 })
 
 const { check, validationResult, matchedData } = require('express-validator')
@@ -27,17 +28,16 @@ router.post('/contact', upload.single('photo'), csrfProtection, [
         .trim(),
     check('email')
         .isEmail()
-        .withMessage('That email doesn‘t look right')
+        .withMessage('That email doesn\'t look right')
         .bail()
         .trim()
         .normalizeEmail()
 ], (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.render('contact', {
-            data: req.body,
-            errors: errors.mapped(),
-            csrfToken: req.csrfToken()
+        return res.status(400).json({ 
+            errors: errors.array(),
+            data: req.body
         });
     }
     const data = matchedData(req)
@@ -45,10 +45,11 @@ router.post('/contact', upload.single('photo'), csrfProtection, [
 
     if (req.file) {
         console.log('Uploaded: ', req.file)
-        // Homework: Upload file to S3
     }
 
-    req.flash('success', 'Thanks for the message! I‘ll be in touch :)')
-    res.redirect('/')
+    res.json({ 
+        success: 'Thanks for the message! I\'ll be in touch :)'
+    });
 })
+
 module.exports = router

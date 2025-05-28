@@ -16,15 +16,15 @@ function App() {
   )
   const [errors, setErrors] = useState(
     {
-    message: "ddd",
-    email: "ccc"
+    "message": "ddd",
+    "email": "ccc"
     }
   )
 
   return (
     <Routes>
       <Route path="/" exact element={<FlashSuccess />} />
-      <Route path="/contact" exact element={<Contact data={data} errors={errors} csrfToken={"asdasd"}/>} />
+      <Route path="/contact" exact element={<Contact data={data} errors={errors}/>} />
       {/*
       {messages.success ? <FlashSuccess /> : ''}
       <h1>Working With Forms in Node.js</h1> */}
