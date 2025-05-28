@@ -6,7 +6,7 @@ const csrfProtection = csrf({ cookie: true })
 const router = express.Router()
 
 router.get('/', (req, res) => {
-    res.render('layout')
+    res.render('index')
 });
 
 router.get('/contact', csrfProtection, (req, res) => {
@@ -47,10 +47,9 @@ router.post('/contact', upload.single('photo'), csrfProtection, [
 
     if (req.file) {
         console.log('Uploaded: ', req.file)
-        // Homework: Upload file to S3
     }
 
     req.flash('success', 'Thanks for the message! I‘ll be in touch :)')
-    //res.redirect('/')
+    res.redirect('/')
 })
 module.exports = router
